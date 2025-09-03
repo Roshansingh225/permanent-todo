@@ -1,14 +1,21 @@
+require('dotenv').config();
 const express = require("express");
 const mongoose = require("mongoose");
 
 const app = express();
 
 
+const port = process.env.PORT || 3000;
+
+app.use(express.json());
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 
-mongoose.connect("mongodb://127.0.0.1:27017/todo");
+mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
 
 const trySchema = new mongoose.Schema({ name: String });
 const Item = mongoose.model("Task", trySchema);
@@ -37,6 +44,6 @@ app.post("/delete", async (req, res) => {
    
 });
 
-app.listen("3000",function(){
-    console.log("server started")
+app.listen(port, function(){
+        console.log("server started")
 });

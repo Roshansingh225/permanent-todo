@@ -12,10 +12,7 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 
-mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
+mongoose.connect(process.env.MONGODB_URI)
 
 const trySchema = new mongoose.Schema({ name: String });
 const Item = mongoose.model("Task", trySchema);

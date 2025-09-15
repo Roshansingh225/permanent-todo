@@ -11,6 +11,7 @@ app.use(express.json());
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
+app.use(require('method-override')('_method'));
 
 mongoose.connect(process.env.MONGODB_URI)
 
@@ -27,16 +28,32 @@ app.get("/", async (req, res) => {
 app.post("/", async (req, res) => {
     
         const taskName = req.body.newItem;
-        const newTask = new Item({ name: taskName });
-        await newTask.save();
+          const newTask = new Item({ name: taskName });
+          await newTask.save();
         res.redirect("/");
    
 });
 
 app.post("/delete", async (req, res) => {
-    
+
         const checkedItemId = req.body.checkbox;
         await Item.findByIdAndDelete(checkedItemId);
+        res.redirect("/");
+
+});
+
+app.put("/:id", async (req, res) => {
+    
+        const itemId = req.params.id;
+        const updatedName = req.body.name;
+        if (!updatedName) {
+          
+            return res.redirect("/");
+        }
+                const updatedItem = await Item.findByIdAndUpdate(itemId, { name: updatedName }, { new: true });
+        if (!updatedItem) {
+            return res.redirect("/");
+        }
         res.redirect("/");
    
 });

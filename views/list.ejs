@@ -14,12 +14,78 @@
     <div class="box">
         <form action="/delete" method="POST">
             <% for (var i = 0; i < ros.length; i++) { %>
-                <div class="items">
+                <div class="items" data-id="<%= ros[i]._id %>">
                     <input type="checkbox" name="checkbox" value="<%= ros[i]._id %>" onChange="this.form.submit()">
-                    <p><%= ros[i].name %></p>
+                    <p class="task-name"><%= ros[i].name %></p>
+                    <button type="button" class="edit-btn" onclick="startEdit('<%= ros[i]._id %>')">Edit</button>
                 </div>
             <% } %>
         </form>
+
+        <script>
+            function startEdit(id) {
+                const itemDiv = document.querySelector('div.items[data-id="' + id + '"]');
+                const p = itemDiv.querySelector('p.task-name');
+                const currentName = p.textContent;
+
+                
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = currentName;
+                input.className = 'edit-input';
+
+               
+                itemDiv.replaceChild(input, p);
+
+                
+                input.focus();
+                input.select();
+
+               
+                input.addEventListener('keydown', function(event) {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        submitEdit(id, input.value);
+                    }
+                    if (event.key === 'Escape') {
+                        
+                        cancelEdit(id, currentName);
+                    }
+                });
+            }
+
+            function submitEdit(id, newName) {
+                if (!newName.trim()) {
+                    alert('Task name cannot be empty.');
+                    return;
+                }
+                
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/' + id + '?_method=PUT';
+
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'name';
+                input.value = newName;
+
+                form.appendChild(input);
+                document.body.appendChild(form);
+                form.submit();
+            }
+
+            function cancelEdit(id, originalName) {
+                const itemDiv = document.querySelector('div.items[data-id="' + id + '"]');
+                const input = itemDiv.querySelector('input.edit-input');
+
+                
+                const p = document.createElement('p');
+                p.className = 'task-name';
+                p.textContent = originalName;
+
+                itemDiv.replaceChild(p, input);
+            }
+        </script>
 
         <form action="/" method="POST">
             <input type="text" name="newItem" placeholder="Enter your task" required>

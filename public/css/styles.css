@@ -89,7 +89,7 @@ input[type="text"]{
 .items {
     display: flex;
     align-items: center;
-    gap: 10px; /* checkbox aur text ke beech spacing */
+    gap: 10px; 
 }
 
 .items input[type="checkbox"] {
@@ -98,4 +98,21 @@ input[type="text"]{
 
 .items p {
     margin: 2px;
+}
+
+.edit-btn {
+    background-color: #A683E3;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.edit-input {
+    font-size: 18px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
 }

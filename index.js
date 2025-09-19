@@ -1,10 +1,7 @@
 require('dotenv').config();
 const express = require("express");
 const mongoose = require("mongoose");
-
 const app = express();
-
-
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
@@ -34,27 +31,21 @@ app.post("/", async (req, res) => {
    
 });
 
-app.put("/:id", async (req, res) => {
-    
-        const itemId = req.params.id;
-        const updatedName = req.body.name;
+app.put("/:id", async (req, res) => {const itemId = req.params.id;
+  const updatedName = req.body.name;
         if (!updatedName) {
           
-            return res.redirect("/");
-        }
+            return res.redirect("/");   }
                 const updatedItem = await Item.findByIdAndUpdate(itemId, { name: updatedName }, { new: true });
         if (!updatedItem) {
-            return res.redirect("/");
-        }
+            return res.redirect("/");}
         res.redirect("/");
    
 });
 
-app.delete("/:id", async (req, res) => {
-    
-        const itemId = req.params.id;
+app.delete("/:id", async (req, res) => {const itemId = req.params.id;
         await Item.findByIdAndDelete(itemId);
-        res.redirect("/");
+             res.redirect("/");
    
 });
 

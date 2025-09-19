@@ -15,9 +15,12 @@
         <form action="/delete" method="POST">
             <% for (var i = 0; i < ros.length; i++) { %>
                 <div class="items" data-id="<%= ros[i]._id %>">
-                    <input type="checkbox" name="checkbox" value="<%= ros[i]._id %>" onChange="this.form.submit()">
+                    <input type="checkbox" name="checkbox" value="<%= ros[i]._id %>" onChange="">
                     <p class="task-name"><%= ros[i].name %></p>
-                    <button type="button" class="edit-btn" onclick="startEdit('<%= ros[i]._id %>')">Edit</button>
+                    <div class="btn-container">
+                        <button type="button" class="edit-btn" onclick="startEdit('<%= ros[i]._id %>')">Edit</button>
+                        <button type="button" class="delete-btn" onclick="submitDelete('<%= ros[i]._id %>')">Delete</button>
+                    </div>
                 </div>
             <% } %>
         </form>
@@ -29,7 +32,7 @@
                 const currentName = p.textContent;
 
                 
-               const input = document.createElement('input');
+                const input = document.createElement('input');
                 input.type = 'text';
                 input.value = currentName;
                 input.className = 'edit-input';
@@ -74,6 +77,15 @@
                 form.submit();
             }
 
+            function submitDelete(id) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/' + id + '?_method=DELETE';
+
+                document.body.appendChild(form);
+                form.submit();
+            }
+
             function cancelEdit(id, originalName) {
                 const itemDiv = document.querySelector('div.items[data-id="' + id + '"]');
                 const input = itemDiv.querySelector('input.edit-input');
@@ -89,7 +101,7 @@
 
         <form action="/" method="POST">
             <input type="text" name="newItem" placeholder="Enter your task" required>
-            <button type="submit">+</button>
+            <button type="submit" class="add-btn">+</button>
         </form>
     </div>
 </body>

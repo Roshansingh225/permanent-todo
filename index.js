@@ -34,14 +34,6 @@ app.post("/", async (req, res) => {
    
 });
 
-app.post("/delete", async (req, res) => {
-
-        const checkedItemId = req.body.checkbox;
-        await Item.findByIdAndDelete(checkedItemId);
-        res.redirect("/");
-
-});
-
 app.put("/:id", async (req, res) => {
     
         const itemId = req.params.id;
@@ -54,6 +46,14 @@ app.put("/:id", async (req, res) => {
         if (!updatedItem) {
             return res.redirect("/");
         }
+        res.redirect("/");
+   
+});
+
+app.delete("/:id", async (req, res) => {
+    
+        const itemId = req.params.id;
+        await Item.findByIdAndDelete(itemId);
         res.redirect("/");
    
 });

@@ -13,12 +13,21 @@
   <div class="box">
 <form action="/" method="POST" class="add-form">
       <input type="text" name="newItem" placeholder="Enter your task" required>
+      <select name="priority" required>
+        <option value="High">High</option>
+        <option value="Medium" selected>Medium</option>
+        <option value="Low">Low</option>
+      </select>
       <button type="submit" class="add-btn">+</button>
  </form>
  <% ros.forEach(function(task) { %>
       <div class="items" data-id="<%= task._id %>">
         <input type="checkbox">
         <p class="task-name"><%= task.name %></p>
+        <span class="priority <%= (task.priority || "Medium").toLowerCase() %>">
+  <%= task.priority || "Medium" %>
+</span>
+
         <div class="btn-container">
           <button type="button" class="edit-btn" onclick="startEdit('<%= task._id %>')">Edit</button>
           <button type="button" class="delete-btn" onclick="submitDelete('<%= task._id %>')">Delete</button>
@@ -28,24 +37,17 @@
   </div>
 <script>
   function startEdit(id) {
-    let item = document.querySelector(`[data-id="${id}"]`);
-    let p = item.querySelector(".task-name");
-    let input = document.createElement("input");
-    input.value = p.textContent;
-    input.onkeydown=e=> {
-      if (e.key==="Enter") submitEdit(id, input.value);
-      if (e.key ==="Escape") item.replaceChild(p, input); };
-item.replaceChild(input, p);
- input.focus(); }
-function submitEdit(id, newName) {
-    if (!newName.trim()) return alert("Task cannot be empty!");
-    fetch("/" + id + "?_method=PUT", {
-      method: "POST",
-      headers: {"Content-Type":"application/x-www-form-urlencoded"},
-      body: "name=" + encodeURIComponent(newName)
-    }).then(()=>location.reload()); }
-function submitDelete(id) { if (!confirm("Delete this task?")) return;
-    fetch("/" + id + "?_method=DELETE", { method: "POST" }).then(()=>location.reload());}
+    let task = document.querySelector(`[data-id="${id}"] .task-name`);
+    let newName = prompt("Edit task:", task.textContent);
+    if (newName && newName.trim()) {
+        fetch(`/${id}?_method=PUT`, {
+  method: "POST",headers: {"Content-Type":"application/x-www-form-urlencoded"}, body: "name=" + encodeURIComponent(newName.trim())
+        }).then(() => location.reload());}}
+function submitDelete(id) {
+    if (!confirm("Delete this task?")) return;
+    fetch("/" + id + "?_method=DELETE", { method: "POST" }).then(()=>location.reload());
+  }
 </script>
+
 </body>
 </html>

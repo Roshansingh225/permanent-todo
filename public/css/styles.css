@@ -128,7 +128,31 @@ input[type="text"]{
     border-radius: 3px;
 }
 
+.priority {
+  margin-left: 10px;
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+}
 
+
+.priority.high {
+  background-color: red;
+  color: white;
+}
+
+.priority.medium {
+  background-color: orange;
+  color: white;
+}
+
+
+
+.priority.low {
+  background-color: green;
+  color: white;
+}
 
 
 

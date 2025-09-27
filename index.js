@@ -43,7 +43,7 @@ app.put("/:id", async (req, res) => {const itemId = req.params.id;
         if (!updatedName) {
           
             return res.redirect("/");   }
-                const updatedItem = await Item.findByIdAndUpdate(itemId, { name: updatedName }, { new: true });
+                const updatedItem = await Task.findByIdAndUpdate(itemId, { name: updatedName }, { new: true });
         if (!updatedItem) {
             return res.redirect("/");}
         res.redirect("/");
@@ -51,7 +51,7 @@ app.put("/:id", async (req, res) => {const itemId = req.params.id;
 });
 
 app.delete("/:id", async (req, res) => {const itemId = req.params.id;
-        await Item.findByIdAndDelete(itemId);
+        await Task.findByIdAndDelete(itemId);
              res.redirect("/");
    
 });
